@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 public class LoginPage {
@@ -44,6 +45,16 @@ public class LoginPage {
         ingresarContrasena(pass);
         clickLogin();
     }
+
+private By errorMessage = By.cssSelector("h3[data-test='error']");
+
+public boolean errorVisible() {
+    return driver.findElements(errorMessage).size() > 0;
+}
+
+public String obtenerTextoError() {
+    return driver.findElement(errorMessage).getText();
+}
 
 
 
