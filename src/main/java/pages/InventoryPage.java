@@ -1,10 +1,13 @@
 package pages;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class InventoryPage {
 
@@ -53,28 +56,40 @@ public class InventoryPage {
         return driver.findElements(botonQuitar(nombreProducto)).size() > 0;
     }
 
-//Vamos a vaciar el carro antes de cada test para que la caché no interfiera.
+public void resetAppState() {
+    // Abrir menú
+    driver.findElement(By.id("react-burger-menu-btn")).click();
+
+    // Esperar y hacer clic en "Reset App State"
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    wait.until(ExpectedConditions.elementToBeClickable(By.id("reset_sidebar_link"))).click();
+
+    // Cerrar menú (opcional, pero limpio)
+    driver.findElement(By.id("react-burger-cross-btn")).click();
+}
 
 public void vaciarCarrito() {
     try {
-        // Si hay badge, entrar al carrito
-        if (driver.findElements(By.className("shopping_cart_badge")).size() > 0) {
-            driver.findElement(By.className("shopping_cart_link")).click();
+        // Ir al carrito
+        driver.findElement(By.className("shopping_cart_link")).click();
 
-            // Quitar todos los productos
-            List<WebElement> botonesRemove = driver.findElements(By.xpath("//button[text()='Remove']"));
-            for (WebElement boton : botonesRemove) {
-                boton.click();
-            }
-
-            // Volver al inventario
-            driver.navigate().back();
+        // Quitar todos los productos si existen
+        List<WebElement> botonesRemove = driver.findElements(By.xpath("//button[text()='Remove']"));
+        for (WebElement boton : botonesRemove) {
+            boton.click();
         }
+
+        // Volver al inventario
+        driver.navigate().back();
+
     } catch (Exception e) {
-        // Si no hay nada, no pasa nada
+        // Si algo falla, no pasa nada
     }
 }
 
 
 }
+
+
+
 

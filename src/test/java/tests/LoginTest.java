@@ -22,29 +22,13 @@ class LoginTest {
                 WebDriverManager.chromedriver().setup();
 
                 ChromeOptions options = new ChromeOptions();
-
-                // PERFIL NUEVO DE VERDAD
-                options.addArguments("--user-data-dir=C:/selenium-profile-clean");
-                options.addArguments("--no-default-browser-check");
-                options.addArguments("--no-first-run");
-
-                // DESACTIVAR TODO LO DE CONTRASEÑAS
-                options.addArguments("--disable-features=PasswordLeakDetection,PasswordManagerOnboarding");
-                options.addArguments("--disable-save-password-bubble");
-                options.addArguments("--disable-extensions");
-
-                // IMPORTANTE: DESACTIVAR GOOGLE SYNC
-                options.addArguments("--disable-sync");
-
+                options.addArguments("--user-data-dir=C:/selenium-profile");
                 driver = new ChromeDriver(options);
 
                 driver.manage().window().maximize();
                 driver.get("https://www.saucedemo.com/");
 
                 loginPage = new LoginPage(driver);
-
-                loginPage.login("standard_user", "secret_sauce");
-                Thread.sleep(2000);
         }
 
         @AfterEach
@@ -56,7 +40,6 @@ class LoginTest {
 
         @Test
         void loginCorrecto() throws InterruptedException {
-
                 loginPage.login("standard_user", "secret_sauce");
                 Thread.sleep(2000);
 
@@ -67,7 +50,6 @@ class LoginTest {
 
         @Test
         void loginIncorrecto() throws InterruptedException {
-
                 loginPage.login("standard_user", "malcontrasena");
                 Thread.sleep(2000);
 
