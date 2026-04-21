@@ -1,12 +1,12 @@
 public class LoginTest {
 
-    private WebDriver driver;
-    private LoginPage loginPage;
+        private WebDriver driver;
+        private LoginPage loginPage;
 
-    //Abre el navegador
+        // Abre el navegador
 
-    @BeforeEach
-    void setUp() {
+        @BeforeEach
+        void setUp() {
                 WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver();
                 driver.manage().window().maximize();
@@ -14,7 +14,7 @@ public class LoginTest {
                 driver.get("https://www.saucedemo.com/");
 
                 loginPage = new LoginPage(driver);
-                
+
         }
 
         // Cierra el navegador
@@ -25,27 +25,25 @@ public class LoginTest {
                 }
         }
 
+        @Test
+        void loginCorrecto() throws InterruptedException {
 
+                // Usamos el método simplificado para el login
+                loginPage.login("standard_user", "secret_sauce");
+                Thread.sleep(2000);
 
-            @Test
-void loginCorrecto() throws InterruptedException {
-
-        // Usamos el método simplificado
-        loginPage.login("standard_user", "secret_sauce");
-        Thread.sleep(2000);
-
-        String urlActual = driver.getCurrentUrl();
+                String urlActual = driver.getCurrentUrl();
                 assertNotNull(urlActual);
                 assertTrue(urlActual.contains("inventory"));
-}
+        }
 
-@Test
-void loginIncorrecto() throws InterruptedException {
+        @Test
+        void loginIncorrecto() throws InterruptedException {
 
-        loginPage.login("standard_user", "malcontrasena");
-        Thread.sleep(2000);
+                loginPage.login("standard_user", "malcontrasena");
+                Thread.sleep(2000);
 
-        assertTrue(loginPage.errorVisible());
-        assertTrue(loginPage.obtenerTextoError().contains("Username and password do not match"));
-}
+                assertTrue(loginPage.errorVisible());
+                assertTrue(loginPage.obtenerTextoError().contains("Username and password do not match"));
+        }
 }

@@ -32,26 +32,35 @@ public class InventoryTest {
         }
 
         @Test
-        void loginCorrecto() throws InterruptedException {
+    void anadirUnProductoAlCarrito() throws InterruptedException {
 
-            // Usamos el método simplificado
-            loginPage.login("standard_user", "secret_sauce");
-            Thread.sleep(2000);
+        inventoryPage.anadirCarrito("Sauce Labs Backpack");
+        Thread.sleep(2000);
 
-            String urlActual = driver.getCurrentUrl();
-            assertNotNull(urlActual);
-            assertTrue(urlActual.contains("inventory"));
-        }
+        assertEquals(1, inventoryPage.getNumeroCarrito(),
+                "El carrito debería mostrar 1 producto");
+    }
 
-        @Test
-        void loginIncorrecto() throws InterruptedException {
+    @Test
+    void anadirDosProductosAlCarrito() throws InterruptedException {
 
-            loginPage.login("standard_user", "malcontrasena");
-            Thread.sleep(2000);
+        inventoryPage.anadirCarrito("Sauce Labs Backpack");
+        inventoryPage.anadirCarrito("Sauce Labs Bike Light");
+        Thread.sleep(2000);
 
-            assertTrue(loginPage.errorVisible());
-            assertTrue(loginPage.obtenerTextoError().contains("Username and password do not match"));
-        }
+        assertEquals(2, inventoryPage.getNumeroCarrito(),
+                "El carrito debería mostrar 2 productos");
+    }
+
+    @Test
+    void botonCambiaTrasAnadirProducto() throws InterruptedException {
+
+        inventoryPage.anadirCarrito("Sauce Labs Backpack");
+        Thread.sleep(2000);
+
+        assertTrue(inventoryPage.botonQuitarVisible("Sauce Labs Backpack"),
+                "El botón debería cambiar a Remove");
+    }
     }
 
 }
