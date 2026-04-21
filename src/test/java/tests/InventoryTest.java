@@ -2,9 +2,6 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,56 +19,44 @@ class InventoryTest {
     private LoginPage loginPage;
     private InventoryPage inventoryPage;
 
-    // Aquí hemos tenido que meter más de lo que se debería porque el navegador
-    // estaba dando problemas con pops up sobre contraseña insegura.
     @BeforeEach
     void setUp() throws InterruptedException {
+
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--user-data-dir=C:/selenium-profile-clean");
+        options.addArguments("--no-default-browser-check");
+        options.addArguments("--no-first-run");
+        options.addArguments("--disable-features=PasswordLeakDetection,PasswordManagerOnboarding");
+        options.addArguments("--disable-save-password-bubble");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-sync");
 
-// PERFIL NUEVO
-options.addArguments("--user-data-dir=C:/selenium-profile-clean");
-options.addArguments("--no-default-browser-check");
-options.addArguments("--no-first-run");
-
-// DESACTIVAR TODO LO DE CONTRASEÑAS
-options.addArguments("--disable-features=PasswordLeakDetection,PasswordManagerOnboarding");
-options.addArguments("--disable-save-password-bubble");
-options.addArguments("--disable-extensions");
-
-// IMPORTANTE: DESACTIVAR GOOGLE SYNC
-options.addArguments("--disable-sync");
-
-driver = new ChromeDriver(options);
-
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.get("https://www.saucedemo.com/");
 
         loginPage = new LoginPage(driver);
-
         inventoryPage = new InventoryPage(driver);
 
         loginPage.login("standard_user", "secret_sauce");
         Thread.sleep(2000);
-
-    
-
     }
 
-@AfterEach
-void tearDown() {
-    try {
-        inventoryPage.vaciarCarrito();
-    } catch (Exception e) {
-        // ignoramos si no se puede vaciar
-    }
+    @AfterEach
+    void tearDown() {
 
-    if (driver != null) {
-        driver.quit();
-    }
-}
+        try {
+            inventoryPage.vaciarCarrito();
+        } catch (Exception e) {
+            // ignoramos si no se puede vaciar
+        }
 
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 
     @Test
     void anadirUnProductoAlCarrito() throws InterruptedException {
