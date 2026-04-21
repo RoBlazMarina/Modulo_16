@@ -27,30 +27,48 @@ Comportamiento dinámico de botones
 El proyecto sigue el patrón Page Object Model (POM) para mantener un código limpio, escalable y fácil de mantener.
 
 📂 Estructura del proyecto
+
 Modulo_16/
+
 │
 ├── pom.xml
+
 ├── src/
+
 │   ├── main/
+
 │   │   └── java/
-│   │       └── pages/
-│   │           ├── LoginPage.java
-│   │           └── InventoryPage.java
-│   │
-│   └── test/
-│       └── java/
-│           └── tests/
-│               ├── LoginTest.java
-│               └── InventoryTest.java
+
+│   │   |    └── pages/
+
+│   │   |    |    ├── LoginPage.java
+
+│   │   |     |   └── InventoryPage.java
+
+
+│   |└── test/
+
+│   |    |└── java/
+
+│    |    |   |└── tests/
+
+│     |    |   |   ├── LoginTest.java
+
+│     |    |    |  |── InventoryTest.java
 
 
 Tecnologías utilizadas
 
 Tecnología	Uso
+
 Java 22	--> Lenguaje principal
+
 Selenium WebDriver -->	Automatización del navegador
+
 JUnit 5	--> Framework de testing
+
 Maven	--> Gestión de dependencias y ejecución
+
 ChromeDriver	--> Control del navegador Chrome
 
 
