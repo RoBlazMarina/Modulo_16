@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import pages.InventoryPage;
@@ -30,13 +29,22 @@ class InventoryTest {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--user-data-dir=C:/selenium-profile");
-        options.addArguments("--no-default-browser-check");
-        options.addArguments("--no-first-run");
-        options.addArguments("--disable-features=PasswordLeakDetection,PasswordManagerOnboarding");
-        options.addArguments("--disable-save-password-bubble");
 
-        driver = new ChromeDriver(options);
+// PERFIL NUEVO
+options.addArguments("--user-data-dir=C:/selenium-profile-clean");
+options.addArguments("--no-default-browser-check");
+options.addArguments("--no-first-run");
+
+// DESACTIVAR TODO LO DE CONTRASEÑAS
+options.addArguments("--disable-features=PasswordLeakDetection,PasswordManagerOnboarding");
+options.addArguments("--disable-save-password-bubble");
+options.addArguments("--disable-extensions");
+
+// IMPORTANTE: DESACTIVAR GOOGLE SYNC
+options.addArguments("--disable-sync");
+
+driver = new ChromeDriver(options);
+
         driver.manage().window().maximize();
         driver.get("https://www.saucedemo.com/");
 
@@ -47,16 +55,23 @@ class InventoryTest {
         loginPage.login("standard_user", "secret_sauce");
         Thread.sleep(2000);
 
+    
+
+    }
+
+@AfterEach
+void tearDown() {
+    try {
         inventoryPage.vaciarCarrito();
-
+    } catch (Exception e) {
+        // ignoramos si no se puede vaciar
     }
 
-    @AfterEach
-    void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+    if (driver != null) {
+        driver.quit();
     }
+}
+
 
     @Test
     void anadirUnProductoAlCarrito() throws InterruptedException {
