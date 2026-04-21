@@ -1,5 +1,7 @@
 README — Proyecto de Automatización con Selenium, JUnit y Maven
-📌 Descripción del proyecto
+
+Descripción del proyecto
+
 Este proyecto implementa un conjunto de pruebas automatizadas sobre la web SauceDemo, utilizando:
 
 Java 22
